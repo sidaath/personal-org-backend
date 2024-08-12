@@ -1,18 +1,8 @@
 from fastapi import FastAPI
-from definitions import Inventory, InventoryItem
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
+from inventory.inventory import get_all_items, add_item, remove_item
+from definitions import InventoryItem
 
 app = FastAPI()
-
-
-inv = Inventory()
-
-invItem1 = InventoryItem(itemName='Itm 1', size=1, units='kg', quantity=10, expDate='22' )
-invItem2 = InventoryItem(itemName='Itm 2', size=44, units='L', quantity=3, expDate='2024-10-22' )
-
-inv.addItem(invItem1)
-inv.addItem(invItem2)
 
 @app.get("/")
 def test():
@@ -22,4 +12,16 @@ def test():
 @app.get('/inventory')
 def getInventory():
     print('get inv')
-    return inv
+    return get_all_items()
+
+@app.get('/add')
+def getInvSize():
+    print('add')
+    print(add_item(name='in 1', size=2, units='kg', quantity=3,expDate='2024-11-09'))
+    return 
+
+@app.get('/remove')
+def remove():
+    print('remove')
+    ret = remove_item(3)
+    return get_all_items()

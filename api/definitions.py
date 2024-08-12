@@ -3,6 +3,7 @@ from typing import Optional, List
 
 
 class InventoryItem(BaseModel):
+    id : int
     itemName : str
     size: int
     units : str
@@ -19,23 +20,9 @@ class InventoryItem(BaseModel):
         self.quantity = self.quantity + 1
         
 
-class Inventory(BaseModel):
-    invList : Optional[List[InventoryItem]] = []
-
-    def addItem(self, item : InventoryItem):
-        self.invList.append(item)
-
-# class WishListItem(BaseModel):
-#     itemName : str
-#     size : int
-#     units : str
-#     quantity : int
-
-
-# class WishList(BaseModel):
-#     wishList : List[WishListItem]
-
-#     def addItem(self, item):
-#         self.wishList.append(item)
-
-
+class CheckListItem(BaseModel):
+    id : int
+    itemName : str
+    size : int
+    units : str
+    quantity : int
