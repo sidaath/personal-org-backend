@@ -1,5 +1,6 @@
 from typing import List
-from definitions import InventoryItem
+from model.inventoryItemModel import InventoryItem
+from model.constants import null_string
 
 items :List[InventoryItem] = []
 __ID__ : int = 6
@@ -14,15 +15,16 @@ items.append(InventoryItem(id=5, itemName='Test itm 5', size=75, units='dl', qua
 def get_all_items():
     return items
 
-def add_item(name:str, size:int, units:str, quantity:int, expDate:str) -> str:
+def add_item(newItem: InventoryItem) -> int:
     global __ID__
-    item_id = __ID__
+    newItem.id= __ID__
     __ID__ = __ID__ + 1
-    items.append(InventoryItem(id=item_id, itemName=name, units=units, size=size,quantity=quantity,expDate=expDate ))
-    return str(len(items) - 1)
+
+    items.append(newItem)
+    return (__ID__ - 1)
 
 def remove_item(id : int) -> int:
-    items[:] = [item for item in items if not item.id == id]
+    items[:] = [inv_item for inv_item in items if not inv_item.id == id]
     return 0
 
         

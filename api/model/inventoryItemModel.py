@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
-
+from model.constants import null_string
 
 class InventoryItem(BaseModel):
     id : int
@@ -8,7 +7,8 @@ class InventoryItem(BaseModel):
     size: int
     units : str
     quantity : int
-    expDate : str
+    expDate : str = null_string
+    price : int | str = null_string
 
     def setExpDate(self, newExpDate : str):
         self.expDate = newExpDate
@@ -18,11 +18,3 @@ class InventoryItem(BaseModel):
     
     def increment(self):
         self.quantity = self.quantity + 1
-        
-
-class CheckListItem(BaseModel):
-    id : int
-    itemName : str
-    size : int
-    units : str
-    quantity : int
