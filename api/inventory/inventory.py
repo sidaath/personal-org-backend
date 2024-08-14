@@ -15,6 +15,13 @@ items.append(InventoryItem(id=5, itemName='Test itm 5', size=75, units='dl', qua
 def get_all_items():
     return items
 
+def get_item_by_id(id: int) -> InventoryItem:
+    filtered = [inv_item for inv_item in items if inv_item.id == id]
+    return filtered[0]
+
+def get_subset(start: int, end : int) -> list[InventoryItem]:
+    return items[start : end]
+
 def add_item(newItem: InventoryItem) -> int:
     global __ID__
     newItem.id= __ID__

@@ -1,5 +1,6 @@
-from fastapi import FastAPI
-from inventory.inventory import get_all_items, add_item, remove_item
+from fastapi import FastAPI, Path, Query
+from typing import Annotated
+import inventory.inventory  as inventory
 from model.inventoryItemModel import InventoryItem
 
 app = FastAPI()
@@ -12,17 +13,30 @@ def test():
 @app.get('/inventory')
 def getInventory():
     print('get inv')
-    return get_all_items()
+    return inventory.get_all_items()
 
-@app.post('/inventoy')
+
+@app.get('/inventory/{item_id}')
+def get_inv_item(item_id : Annotated[int, Path(title='ID of inventory item to retrieve')]):
+    return inventory.get_item_by_id(item_id)
+
+
+@app.get('/inventory/')
+def get_items(start: Annotated[int, Query(title='Start index')], 
+              end: Annotated[int, Query(title='End index')] 
+              ):
+    return inventory.get_subset(start, end)
+
+
+@app.post('/inventory')
 def addInvItem(item : InventoryItem) -> str:
     print('add to inv')
-    add_item(item)
+    inventory.add_item(item)
     return ("success")
 
 
 @app.get('/remove')
 def remove():
     print('remove')
-    ret = remove_item(3)
-    return get_all_items()
+    ret = inventory.remove_item(3)
+    return inventory.get_all_items()
