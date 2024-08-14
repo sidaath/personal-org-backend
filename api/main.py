@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Path, Query
 from typing import Annotated
-import inventory.inventory  as inventory
-from model.inventoryItemModel import InventoryItem
+import api.inventory.inventory  as inventory
+from api.model.inventoryItemModel import InventoryItem
 
 app = FastAPI()
 

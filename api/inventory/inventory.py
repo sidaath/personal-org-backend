@@ -1,6 +1,6 @@
 from typing import List
-from model.inventoryItemModel import InventoryItem
-from model.constants import null_string
+from api.model.inventoryItemModel import InventoryItem
+
 
 items :List[InventoryItem] = []
 __ID__ : int = 6

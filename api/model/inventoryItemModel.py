@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from model.constants import null_string
+from api.model.constants import null_string
 
 class InventoryItem(BaseModel):
     id : int
