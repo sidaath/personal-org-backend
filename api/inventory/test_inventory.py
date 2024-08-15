@@ -8,12 +8,20 @@ class TestInv(unittest.TestCase):
         self.assertListEqual(get_all_items(), items, 'failed : get_all_items_() ')
 
     def test_get_item_by_id(self):
-        item : InventoryItem = get_item_by_id(items[1].id)
+        item : InventoryItem | None = get_item_by_id(items[1].id)
         self.assertEqual(item, items[1], 'failed : get_item_by_id()')
+
+        idx_out_of_range : int = len(items) + 10
+        item = get_item_by_id(idx_out_of_range)
+        self.assertEqual(item, None)
 
     def test_get_subset(self):
         subset: list[InventoryItem] = get_subset(1,2)
         subset2 = items[1:2]
+        self.assertListEqual(subset, subset2, 'failed : get_subset()')
+
+        subset = get_subset(100, 200)
+        subset2 = []
         self.assertListEqual(subset, subset2, 'failed : get_subset()')
 
     def test_add_item(self):

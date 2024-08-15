@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path, Query, Body, status
+from fastapi import FastAPI, Path, Query, Body, status, Response
 from typing import Annotated
 import api.inventory.inventory  as inventory
 from api.model.inventoryItemModel import InventoryItem
@@ -11,32 +11,49 @@ def test():
 
 
 @app.get('/inventory', status_code=status.HTTP_200_OK)
-def getInventory():
+def getInventory(res : Response):
     print('get inv')
-    return inventory.get_all_items()
+    items = inventory.get_all_items()
+    if list != type(items):
+        res.status_code = status.HTTP_404_NOT_FOUND
+        return {}
+    else:
+        return items
 
 
 @app.get('/inventory/{item_id}', status_code=status.HTTP_200_OK)
-def get_inv_item(item_id : Annotated[int, Path(title='ID of inventory item to retrieve')]):
-    return inventory.get_item_by_id(item_id)
+def get_inv_item(item_id : Annotated[int, Path(title='ID of inventory item to retrieve')], res : Response):
+    item: InventoryItem | None = inventory.get_item_by_id(item_id)
+    if InventoryItem != type(item):
+        res.status_code = status.HTTP_404_NOT_FOUND
+        return {}
+    else:
+        return item
 
 
 @app.get('/inventory/', status_code=status.HTTP_200_OK)
 def get_items(start: Annotated[int, Query(title='Start index')], 
-              end: Annotated[int, Query(title='End index')] 
+              end: Annotated[int, Query(title='End index')],
+              res : Response
               ):
-    return inventory.get_subset(start, end)
+    result = inventory.get_subset(start, end)
+    if result == []:
+        res.status_code = status.HTTP_400_BAD_REQUEST
+        return result
+    return result
 
 
 @app.post('/inventory', status_code=status.HTTP_201_CREATED)
-def addInvItem(item : InventoryItem) -> str:
+def addInvItem(item : InventoryItem, res: Response) -> str:
     print('add to inv')
-    inventory.add_item(item)
+    ret : int = inventory.add_item(item)
+    if type(ret) != int:
+        res.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+        return ("fail")
     return ("success")
 
 
 @app.delete('/inventory/{id}', status_code=status.HTTP_202_ACCEPTED)
 def remove_item(id : int):
-    print(f'remove item %d',id)
     return {}
     
