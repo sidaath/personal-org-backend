@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Path, Query, Body, status, Response
+from fastapi import FastAPI, Path, Query, status, Response
 from typing import Annotated
 import api.inventory.inventory  as inventory
+import api.checklist.checklist as checklist
 from api.model.inventoryItemModel import InventoryItem
 
 app = FastAPI()
@@ -57,3 +58,11 @@ def add_inv_item(item : InventoryItem, res: Response) -> str:
 def remove_item(id : int):
     return {}
 
+
+########### CHECKLIST ###############
+
+@app.get('/checklist', status_code=status.HTTP_200_OK)
+def get_checklist():
+    print('get checklist')
+    items  = checklist.get_all_items()
+    return items
