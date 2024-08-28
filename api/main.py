@@ -9,9 +9,9 @@ app = FastAPI()
 def test():
     return 'helloooo'
 
-
+########### INVENTORY ###############
 @app.get('/inventory', status_code=status.HTTP_200_OK)
-def getInventory(res : Response):
+def get_inventory(res : Response):
     print('get inv')
     items = inventory.get_all_items()
     if list != type(items):
@@ -44,7 +44,7 @@ def get_items(start: Annotated[int, Query(title='Start index')],
 
 
 @app.post('/inventory', status_code=status.HTTP_201_CREATED)
-def addInvItem(item : InventoryItem, res: Response) -> str:
+def add_inv_item(item : InventoryItem, res: Response) -> str:
     print('add to inv')
     ret : int = inventory.add_item(item)
     if type(ret) != int:
@@ -56,4 +56,4 @@ def addInvItem(item : InventoryItem, res: Response) -> str:
 @app.delete('/inventory/{id}', status_code=status.HTTP_202_ACCEPTED)
 def remove_item(id : int):
     return {}
-    
+
