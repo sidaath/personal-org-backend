@@ -1,4 +1,6 @@
 from api.model.checkListItemModel import CheckListItem
+from api.model.inventoryItemModel import InventoryItem
+from api.inventory.inventory import add_item as add_to_inv
 
 items2 : list[CheckListItem] = []
 
@@ -12,5 +14,20 @@ def get_all_items() -> list[CheckListItem]:
     return items2
 
 
+def add_to_inventory(check_itm_id : int, exp_date : str) -> int:
+    filtered : list[CheckListItem] = [item for item in items2 if item.id == check_itm_id]
+    if(len(filtered) == 0):
+        return -1
+    else:
+        checked_item : CheckListItem = filtered[0]
+        inv_item : InventoryItem = InventoryItem(id=0, itemName=checked_item.itemName, size=checked_item.size, units=checked_item.units, quantity=checked_item.quantity)
+        inv_item.expDate = exp_date
+        inv_itm_id : int = add_to_inv(inv_item)
+        remove_checklist_item(check_itm_id)
+        return inv_itm_id
 
 
+
+def remove_checklist_item(id : int)->int:
+    items2[:] = [item for item in items2 if item.id != id]
+    return 0 

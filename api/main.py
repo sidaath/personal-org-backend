@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path, Query, status, Response
+from fastapi import FastAPI, Path, Query, status, Response, Body
 from typing import Annotated
 import api.inventory.inventory  as inventory
 import api.checklist.checklist as checklist
@@ -66,3 +66,12 @@ def get_checklist():
     print('get checklist')
     items  = checklist.get_all_items()
     return items
+
+@app.post('/checklist', status_code=status.HTTP_201_CREATED)
+def check_item(res : Response, id : int = Body(embed=True), exp_date : str = Body(default='', embed=True)):
+    print('check item off checklist')
+    if (checklist.add_to_inventory(check_itm_id=id, exp_date='NULL') > 0):
+        return "success"
+    else:
+        res.status_code = status.HTTP_304_NOT_MODIFIED
+        return "fail"
