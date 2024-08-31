@@ -3,6 +3,7 @@ from typing import Annotated
 import api.inventory.inventory  as inventory
 import api.checklist.checklist as checklist
 from api.model.inventoryItemModel import InventoryItem
+from api.model.checkListItemModel import CheckListItem
 
 app = FastAPI()
 
@@ -67,11 +68,20 @@ def get_checklist():
     items  = checklist.get_all_items()
     return items
 
-@app.post('/checklist', status_code=status.HTTP_201_CREATED)
+@app.patch('/checklist', status_code=status.HTTP_201_CREATED)
 def check_item(res : Response, id : int = Body(embed=True), exp_date : str = Body(default='', embed=True)):
     print('check item off checklist')
     if (checklist.add_to_inventory(check_itm_id=id, exp_date='NULL') > 0):
         return "success"
     else:
         res.status_code = status.HTTP_304_NOT_MODIFIED
+        return "fail"
+    
+@app.post('/checklist', status_code=status.HTTP_201_CREATED)
+def add_checklist_item(res : Response, item : CheckListItem):
+    print('add item to checklist')
+    ret : int = checklist.add_new_checklist_item(item)
+    if(ret > 0):
+        return ret
+    else:
         return "fail"

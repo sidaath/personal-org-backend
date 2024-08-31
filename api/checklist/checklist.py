@@ -9,10 +9,19 @@ items2.append(CheckListItem(id=2, itemName="CHK 2", size=10, units="L",quantity=
 items2.append(CheckListItem(id=3, itemName="CHK 3", size=10, units="ml",quantity=31))
 items2.append(CheckListItem(id=4, itemName="CHK 4", size=10, units="g",quantity=43))
 
+__CHK_ID__ : int = 5
+
 
 def get_all_items() -> list[CheckListItem]:
     return items2
 
+def add_new_checklist_item(newItem : CheckListItem)->int:
+    global __CHK_ID__
+    newItem.id = __CHK_ID__
+    __CHK_ID__ = __CHK_ID__ + 1
+    items2.append(newItem)
+
+    return (__CHK_ID__-1)
 
 def add_to_inventory(check_itm_id : int, exp_date : str) -> int:
     filtered : list[CheckListItem] = [item for item in items2 if item.id == check_itm_id]
