@@ -54,6 +54,23 @@ def add_inv_item(item : InventoryItem, res: Response) -> str:
         return ("fail")
     return ("success")
 
+@app.patch('/inventory', status_code=status.HTTP_202_ACCEPTED)
+def modify_inv_item(res :Response, id : int = Body(embed=True), value : str = Body(embed=True)):
+    value_map : dict[str, str] = {}
+    val_list : list[str] = value.split(';;')
+    for i in range(0,len(val_list)-1,2):
+        value_map[val_list[i]] = val_list[i+1]
+
+    old_item = inventory.get_item_by_id(id)
+    if(type(old_item) == None):
+        res.status_code=status.HTTP_404_NOT_FOUND
+        return
+    else:
+        for key,val in value_map.items():
+            if key=='quantity':
+                ret = inventory.modify_quantity(id, int(val))
+    return ('success')
+
 
 @app.delete('/inventory/{id}', status_code=status.HTTP_202_ACCEPTED)
 def remove_item(id : int):

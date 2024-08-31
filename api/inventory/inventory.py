@@ -43,4 +43,16 @@ def remove_item(id : int) -> int:
     return 0
 
         
+def modify_quantity(id : int, value : int)->bool:
+    index : list[int] = [idx for idx,item in enumerate(items) if item.id == id]
+    if len(index) == 0:
+        return False
+    else:
+        if (value == 0):
+            remove_item(id)
+            return True
+        item : InventoryItem  = items[index[0]]
+        item.quantity = value
+        items[index[0]] = item
+        return True
     
