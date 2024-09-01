@@ -86,9 +86,9 @@ def get_checklist():
     return items
 
 @app.patch('/checklist', status_code=status.HTTP_201_CREATED)
-def check_item(res : Response, id : int = Body(embed=True), exp_date : str = Body(default='', embed=True)):
+def check_item(res : Response, id : int = Body(embed=True), exp_date : str = Body(default=None, embed=True)):
     print('check item off checklist')
-    if (checklist.add_to_inventory(check_itm_id=id, exp_date='NULL') > 0):
+    if (checklist.add_to_inventory(id, exp_date) > 0):
         return "success"
     else:
         res.status_code = status.HTTP_304_NOT_MODIFIED

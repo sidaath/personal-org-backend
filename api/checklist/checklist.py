@@ -28,8 +28,9 @@ def add_to_inventory(check_itm_id : int, exp_date : str) -> int:
     if(len(filtered) == 0):
         return -1
     else:
+        print('exp=',exp_date)
         checked_item : CheckListItem = filtered[0]
-        inv_item : InventoryItem = InventoryItem(id=0, itemName=checked_item.itemName, size=checked_item.size, units=checked_item.units, quantity=checked_item.quantity)
+        inv_item : InventoryItem = InventoryItem(id=0, itemName=checked_item.itemName, size=checked_item.size, units=checked_item.units, quantity=checked_item.quantity, expDate=None,price=None)
         inv_item.expDate = exp_date
         inv_itm_id : int = add_to_inv(inv_item)
         remove_checklist_item(check_itm_id)

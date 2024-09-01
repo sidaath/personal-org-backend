@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from api.model.constants import null_string
 
 class InventoryItem(BaseModel):
     id : int
@@ -7,8 +6,8 @@ class InventoryItem(BaseModel):
     size: int
     units : str
     quantity : int
-    expDate : str = null_string
-    price : int | str = null_string
+    expDate : str | None
+    price : int | None
 
     def setExpDate(self, newExpDate : str):
         self.expDate = newExpDate
