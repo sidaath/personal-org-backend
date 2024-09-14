@@ -25,10 +25,10 @@ class TestInv(unittest.TestCase):
         self.assertListEqual(subset, subset2, 'failed : get_subset()')
 
     def test_add_item(self):
-        newItem : InventoryItem = InventoryItem(id=0, itemName='Test add 1', size=10, units='kg', quantity=1, expDate='2024-11-29')
+        newItem : InventoryItem = InventoryItem(id=0, itemName='Test add 1', size=10, units='kg', quantity=1, expDate='2024-11-29', price=None)
         res1 : int = add_item(newItem=newItem)
 
-        newItem2 : InventoryItem = InventoryItem(id=0, itemName='Test add 2', size=20, units='kg', quantity=1, expDate='2024-11-31')
+        newItem2 : InventoryItem = InventoryItem(id=0, itemName='Test add 2', size=20, units='kg', quantity=1, expDate='2024-11-31', price=None)
         res2 : int = add_item(newItem2)
 
         x = get_item_by_id(res1)
@@ -38,7 +38,7 @@ class TestInv(unittest.TestCase):
         self.assertEqual(y, newItem2)
 
     def test_remove_item(self):
-        tempItem : InventoryItem = InventoryItem(id=1, itemName='temp 1', size=10, units='kg', quantity=10)
+        tempItem : InventoryItem = InventoryItem(id=1, itemName='temp 1', size=10, units='kg', quantity=10, price=None, expDate=None)
         res = add_item(tempItem)
         self.assertNotEqual(res, None, 'faild : remove_item() at add_item()')
 
