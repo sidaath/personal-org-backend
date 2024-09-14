@@ -68,10 +68,15 @@ def modify_inv_item(res :Response, id : int = Body(embed=True), value : str = Bo
     return ('success')
 
 
-@app.delete('/inventory/{id}', status_code=status.HTTP_202_ACCEPTED)
-def remove_item(id : int):
-    return {}
-
+@app.delete('/inventory/{id}', status_code=status.HTTP_200_OK)
+def remove_item(res : Response, id : int):
+    print(f"delete inv item with id {id}")
+    ret : int = inventory.remove_item(id=int(id))
+    if ret > -1:
+        return "success"
+    else:
+        res.status_code = status.HTTP_404_NOT_FOUND
+        return "fail"
 
 ########### CHECKLIST ###############
 
@@ -102,7 +107,7 @@ def add_checklist_item(res : Response, item : CheckListItem):
     
 @app.delete('/checklist/{id}',status_code=status.HTTP_200_OK)
 def delete_checklist_item(res : Response, id : Annotated[int, Path(title="id of item to delete")]):
-    print(f"delete item with id {id}")
+    print(f"delete checklist item with id {id}")
     ret : int = checklist.remove_checklist_item(int(id))
     if ret > -1:
         return "success"

@@ -47,8 +47,12 @@ def add_item(newItem: InventoryItem) -> int:
     return (__ID__ - 1)
 
 def remove_item(id : int) -> int:
-    items[:] = [inv_item for inv_item in items if not inv_item.id == id]
-    return 0
+    index_list = [index for index,item in enumerate(items) if item.id == id]
+    if len(index_list) == 1:
+        items.pop(index_list[0])
+        return index_list[0]
+    else:
+        return -1
 
         
 def modify_quantity(id : int, value : int)->bool:
