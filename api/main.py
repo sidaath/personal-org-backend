@@ -99,3 +99,13 @@ def add_checklist_item(res : Response, item : CheckListItem):
         return ret
     else:
         return "fail"
+    
+@app.delete('/checklist/{id}',status_code=status.HTTP_200_OK)
+def delete_checklist_item(res : Response, id : Annotated[int, Path(title="id of item to delete")]):
+    print(f"delete item with id {id}")
+    ret : int = checklist.remove_checklist_item(int(id))
+    if ret > -1:
+        return "success"
+    else:
+        res.status_code = status.HTTP_404_NOT_FOUND
+        return "fail"
