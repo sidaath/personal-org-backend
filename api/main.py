@@ -7,10 +7,6 @@ from api.model.checkListItemModel import CheckListItem
 
 app = FastAPI()
 
-@app.get("/")
-def test():
-    return 'helloooo'
-
 ########### INVENTORY ###############
 @app.get('/inventory', status_code=status.HTTP_200_OK)
 def get_inventory(res : Response):
@@ -86,9 +82,10 @@ def get_checklist():
     return items
 
 @app.patch('/checklist', status_code=status.HTTP_201_CREATED)
-def check_item(res : Response, id : int = Body(embed=True), exp_date : str = Body(default=None, embed=True)):
+def check_item(res : Response, id : int = Body(embed=True), exp_date : str = Body(default=None, embed=True), quantity : int = (Body(default=None, embed=True))):
     print('check item off checklist')
-    if (checklist.add_to_inventory(id, exp_date) > 0):
+    inv_id : int = checklist.check_item(id, exp_date, quantity=quantity) 
+    if (inv_id > 0):
         return "success"
     else:
         res.status_code = status.HTTP_304_NOT_MODIFIED
